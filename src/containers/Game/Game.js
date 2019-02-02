@@ -32,12 +32,20 @@ class Game extends Component {
         this.socket.on('win', (data) => {
             alert(data);
         });
+
+        this.socket.on('db', (data) => {
+            this.databaseConnection(data);
+        });
         
         this.unloadListener();
     }
 
     componentWillUnmount() {
         this.socket.close();
+    }
+
+    databaseConnection(data) {
+        console.log(data)
     }
 
     receiveClicks = (data) => {
