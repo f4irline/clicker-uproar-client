@@ -8,7 +8,7 @@ class Game extends Component {
         
         this.state = {
             clicks: 0,
-            endpoint: 'http://localhost:4001',
+            endpoint: 'https://clicker-uproar-server.herokuapp.com/',
             user: 'John'
         }
 
@@ -59,7 +59,7 @@ class Game extends Component {
         return (
             <div className='Game'>
                 <p>Clicks: {this.state.clicks}</p>
-                <button onClick={() => this.handleButtonClick()}>Click!</button>
+                <button onClick={() => this.handleButtonClick()}>Click!!</button>
             </div>
         )
     }
