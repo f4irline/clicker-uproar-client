@@ -30,7 +30,8 @@ class Game extends Component {
         });
 
         this.socket.on('win', (data) => {
-            alert(data);
+            console.log(data);
+            // alert(data);
         });
 
         this.socket.on('db', (data) => {
