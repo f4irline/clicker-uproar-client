@@ -7,18 +7,21 @@
 
 .login-wrapper {
     display: flex;
+    flex-direction: column;
     height: 100px;
     padding: 10px;
-    width: 40vw;
-    box-shadow: 0 2px 3px #333;
-    justify-content: center;
+    width: 80%;
     align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 3px #333;
 }
 
 .login-wrapper > input {
+    margin: 5px;
     font-size: 3vh;
 }
 
 .login-wrapper > button {
+    margin: 5px;
     font-size: 3vh;
 }

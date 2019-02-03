@@ -15,7 +15,8 @@ class Game extends Component {
             endpoint: 'https://clicker-uproar-server.herokuapp.com/',
             // endpoint: 'localhost:5000',
             user: props.userName,
-            shaking: false
+            shaking: false,
+            win: false
         }
 
         this.socket = socketIOClient(this.state.endpoint);
@@ -23,6 +24,12 @@ class Game extends Component {
         this.shakeTimer = setTimeout(() => {
             this.setState({shaking: false});
         }, 2000);
+
+        this.winTimer = setTimeout(() => {
+            this.setState({win: false});
+        }, 1000);
+
+        this.audio = new Audio(require('../../assets/sfx/monch.mp3'));
     }
 
     /**
@@ -81,6 +88,13 @@ class Game extends Component {
     handleButtonClick = () => {
         console.log('Clicked');
         clearTimeout(this.shakeTimer);
+        if (this.audio.paused) {
+            this.audio.play();
+        } else {
+            this.audio.pause();
+            this.audio.currentTime = 0;
+            this.audio.play();
+        }
         this.setState({totalClicks: this.state.totalClicks + 1, clicks: this.state.clicks + 1, shaking: true}, () => {
             this.socket.emit('clicked', {
                 userClicks: this.state.clicks,

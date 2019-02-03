@@ -6,6 +6,9 @@
 .Game {
     font-family: Zcool;
     overflow: hidden;
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 .Game > p {
@@ -17,6 +20,7 @@
 }
 
 .hello {
+    margin-top: 2vh;
     text-transform: uppercase;
     font-size: 8vh;
 }
