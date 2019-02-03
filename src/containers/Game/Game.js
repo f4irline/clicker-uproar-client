@@ -9,7 +9,7 @@ class Game extends Component {
         this.state = {
             totalClicks: 0,
             clicks: 0,
-            endpoint: 'localhost:5000/',
+            endpoint: 'https://clicker-uproar-server.herokuapp.com/',
             user: 'John'
         }
 
