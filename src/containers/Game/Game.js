@@ -30,12 +30,18 @@ class Game extends Component {
         });
 
         this.socket.on('win', (data) => {
-            console.log(data);
-            // alert(data);
+            alert(data);
         });
 
-        this.socket.on('db', (data) => {
-            this.databaseConnection(data);
+        this.socket.on('initclicks', (data) => {
+            this.setState({clicks: data});
+            console.log('Getting clicks');
+        });
+
+        this.socket.on('requestClicks', (data) => {
+            console.log('New connection found');
+            console.log(data);
+            this.sendClicks(data);
         });
         
         this.unloadListener();
@@ -52,6 +58,13 @@ class Game extends Component {
     receiveClicks = (data) => {
         console.log('Receiving');
         this.setState({clicks: data.clicks})
+    }
+
+    sendClicks = (data) => {
+        this.socket.emit('newConnection', {
+            clicks: this.state.clicks,
+            socket: data
+        });
     }
 
     handleButtonClick = () => {
