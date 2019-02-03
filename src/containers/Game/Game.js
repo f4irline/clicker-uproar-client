@@ -16,7 +16,8 @@ class Game extends Component {
             // endpoint: 'localhost:5000',
             user: props.userName,
             shaking: false,
-            win: false
+            win: false,
+            winText: ''
         }
 
         this.socket = socketIOClient(this.state.endpoint);
@@ -25,11 +26,8 @@ class Game extends Component {
             this.setState({shaking: false});
         }, 2000);
 
-        this.winTimer = setTimeout(() => {
-            this.setState({win: false});
-        }, 1000);
-
-        this.audio = new Audio(require('../../assets/sfx/monch.mp3'));
+        this.monch = new Audio(require('../../assets/sfx/monch.mp3'));
+        this.win = new Audio(require('../../assets/sfx/win.mp3'));
     }
 
     /**
@@ -37,11 +35,21 @@ class Game extends Component {
      */
     componentDidMount() {
         this.socket.on('clicked', (data) => { // Called when another socket clicks the button
+            clearTimeout(this.shakeTimer);
             this.receiveClicks(data);
+            this.setState({shaking: true}, () => {
+                this.shakeTimer = setTimeout(() => {
+                    this.setState({shaking: false});
+                }, 1000);
+            });
         });
 
         this.socket.on('win', (data) => { // Called when this socket wins
-            alert(data);
+            this.setState({winText: data, win: true});
+            this.win.play();
+            setTimeout(() => {
+                this.setState({win: false});
+            }, 2000);    
         });
 
         this.socket.on('initclicks', (data) => { // Called when this socket connects, sets the amount of clicks to the state
@@ -88,12 +96,12 @@ class Game extends Component {
     handleButtonClick = () => {
         console.log('Clicked');
         clearTimeout(this.shakeTimer);
-        if (this.audio.paused) {
-            this.audio.play();
+        if (this.monch.paused) {
+            this.monch.play();
         } else {
-            this.audio.pause();
-            this.audio.currentTime = 0;
-            this.audio.play();
+            this.monch.pause();
+            this.monch.currentTime = 0;
+            this.monch.play();
         }
         this.setState({totalClicks: this.state.totalClicks + 1, clicks: this.state.clicks + 1, shaking: true}, () => {
             this.socket.emit('clicked', {
@@ -109,12 +117,17 @@ class Game extends Component {
     render() {
 
         let game = null;
+        let winClass = 'win hidden';
         let shakerClass = 'click-header';
         let cookieClass = 'clicker';
 
         if (this.state.shaking) {
             cookieClass = 'clicker shaker';
             shakerClass = 'click-header shaker'
+        }
+
+        if (this.state.win) {
+            winClass = 'win';
         }
 
         if (this.state.loading) {
@@ -129,8 +142,8 @@ class Game extends Component {
                     <h1 className='hello'>Hello, {this.state.user}</h1>
                     <h1 className={shakerClass}>Click the cookie!</h1>
                     <img src={require('../../assets/images/cookie.PNG')} alt='Cookie' className={cookieClass} onClick={() => this.handleButtonClick()}/>
-                    {/* <button className='clicker' onClick={() => this.handleButtonClick()}>Click!!</button> */}
                     <p>Amount of clicks needed for next win: {100 - (this.state.totalClicks % 100)}</p>
+                    <p className={winClass}>You win {this.state.winText}!</p>
                 </div>
             )
         }
