@@ -98,7 +98,7 @@ class Game extends Component {
     render() {
         return (
             <div className='Game'>
-                <p>Clicks: {this.state.totalClicks}</p>
+                <p>Amount of clicks needed for next win: {100 - (this.state.totalClicks % 100)}</p>
                 <button onClick={() => this.handleButtonClick()}>Click!!</button>
             </div>
         )
