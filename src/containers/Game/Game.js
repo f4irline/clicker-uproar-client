@@ -9,25 +9,12 @@ class Game extends Component {
         this.state = {
             totalClicks: 0,
             clicks: 0,
-            endpoint: 'https://clicker-uproar-server.herokuapp.com/',
-            // endpoint: 'localhost:5000',
+            // endpoint: 'https://clicker-uproar-server.herokuapp.com/',
+            endpoint: 'localhost:5000',
             user: props.userName
         }
 
         this.socket = socketIOClient(this.state.endpoint);
-    }
-
-    /**
-     * Sends the current amount of clicks to the socket.io listener
-     * when the app is closed.
-     */
-    unloadListener = () => {
-        console.log('Added unload listener');
-        window.addEventListener('beforeunload', () => {
-            this.socket.emit('unload', {
-                clicks: this.state.totalClicks
-            });
-        })
     }
 
     /**
@@ -52,8 +39,6 @@ class Game extends Component {
             console.log(data);
             this.sendClicks(data);
         });
-        
-        this.unloadListener(); // Initialize unload listener
     }
 
     /**
@@ -68,7 +53,7 @@ class Game extends Component {
      */
     receiveClicks = (data) => {
         console.log('Receiving');
-        this.setState({totalClicks: data.clicks})
+        this.setState({totalClicks: data})
     }
 
     /**
@@ -89,7 +74,6 @@ class Game extends Component {
         console.log('Clicked');
         this.setState({totalClicks: this.state.totalClicks + 1, clicks: this.state.clicks + 1}, () => {
             this.socket.emit('clicked', {
-                clicks: this.state.totalClicks,
                 userClicks: this.state.clicks,
                 user: this.state.user
             });
