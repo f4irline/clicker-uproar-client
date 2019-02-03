@@ -9,7 +9,7 @@ import Navigation from './containers/Navigation/Navigation';
 class App extends Component {
 
     state = {
-        logged: true,
+        logged: false,
         user: ''
     }
 
