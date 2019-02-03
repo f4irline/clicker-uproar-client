@@ -27,7 +27,7 @@ class App extends Component {
             app = (
                 <div className='App'>
                     <Navigation />
-                    <Route path='/' exact component={Game} />
+                    <Route path='/' exact render={(props) => <Game {...props} userName={this.state.user} />} />
                     <Route path='/leaderboards' exact component={Leaderboards} />
                 </div>
             )

@@ -9,4 +9,5 @@
     max-height: 5vh !important;
     overflow: hidden;
     justify-content: space-evenly;
+    align-content: center;
 }
