@@ -10,7 +10,8 @@ class Game extends Component {
             totalClicks: 0,
             clicks: 0,
             endpoint: 'https://clicker-uproar-server.herokuapp.com/',
-            user: 'John'
+            // endpoint: 'localhost:5000',
+            user: props.userName
         }
 
         this.socket = socketIOClient(this.state.endpoint);
@@ -98,6 +99,7 @@ class Game extends Component {
     render() {
         return (
             <div className='Game'>
+                <h1>Hello {this.state.user}</h1>
                 <p>Amount of clicks needed for next win: {100 - (this.state.totalClicks % 100)}</p>
                 <button onClick={() => this.handleButtonClick()}>Click!!</button>
             </div>
