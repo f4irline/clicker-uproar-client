@@ -1,4 +1,10 @@
+@font-face {
+    font-family: Titillium-Light;
+    src: url('../../assets/fonts/Titillium_Web/TitilliumWeb-Bold.ttf');
+}
+
 .Login {
+    font-family: Titillium-Light;
     display: flex;
     height: 100vh;
     align-items: center;
@@ -8,7 +14,7 @@
 .login-wrapper {
     display: flex;
     flex-direction: column;
-    height: 100px;
+    height: 300;
     padding: 10px;
     width: 80%;
     align-items: center;
@@ -17,11 +23,13 @@
 }
 
 .login-wrapper > input {
+    font-family: Titillium-Light;
     margin: 5px;
     font-size: 3vh;
 }
 
 .login-wrapper > button {
+    font-family: Titillium-Light;
     margin: 5px;
     font-size: 3vh;
 }

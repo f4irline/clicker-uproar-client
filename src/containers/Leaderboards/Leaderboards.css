@@ -1,0 +1,8 @@
+@font-face {
+    font-family: Titillium-Light;
+    src: url('../../assets/fonts/Titillium_Web/TitilliumWeb-Light.ttf');
+}
+
+.Leaderboards {
+    font-family: Titillium-Light;
+}

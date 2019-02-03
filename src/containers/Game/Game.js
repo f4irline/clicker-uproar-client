@@ -142,7 +142,7 @@ class Game extends Component {
                     <h1 className='hello'>Hello, {this.state.user}</h1>
                     <h1 className={shakerClass}>Click the cookie!</h1>
                     <img src={require('../../assets/images/cookie.PNG')} alt='Cookie' className={cookieClass} onClick={() => this.handleButtonClick()}/>
-                    <p>Amount of clicks needed for next win: {100 - (this.state.totalClicks % 100)}</p>
+                    <p className='amount'>Amount of clicks needed for next win: {100 - (this.state.totalClicks % 100)}</p>
                     <p className={winClass}>You win {this.state.winText}!</p>
                 </div>
             )

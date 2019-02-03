@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Game from './containers/Game/Game';
 import Login from './containers/Login/Login';
+import Leaderboards from './containers/Leaderboards/Leaderboards';
 
 class App extends Component {
 
@@ -24,7 +25,7 @@ class App extends Component {
 
         return (
         <div className="App">
-            {app}
+            <Leaderboards />
         </div>
         );
     }
