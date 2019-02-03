@@ -1,20 +1,28 @@
 import React, { Component } from 'react';
 import socketIOClient from 'socket.io-client';
 
+import './Game.css';
+
 class Game extends Component {
 
     constructor(props) {
         super(props);
         
         this.state = {
+            loading: true,
             totalClicks: 0,
             clicks: 0,
             endpoint: 'https://clicker-uproar-server.herokuapp.com/',
             // endpoint: 'localhost:5000',
-            user: props.userName
+            user: props.userName,
+            shaking: false
         }
 
         this.socket = socketIOClient(this.state.endpoint);
+
+        this.shakeTimer = setTimeout(() => {
+            this.setState({shaking: false});
+        }, 2000);
     }
 
     /**
@@ -30,7 +38,7 @@ class Game extends Component {
         });
 
         this.socket.on('initclicks', (data) => { // Called when this socket connects, sets the amount of clicks to the state
-            this.setState({totalClicks: data});
+            this.setState({totalClicks: data, loading: false});
             console.log('Getting clicks');
         });
 
@@ -72,21 +80,49 @@ class Game extends Component {
      */
     handleButtonClick = () => {
         console.log('Clicked');
-        this.setState({totalClicks: this.state.totalClicks + 1, clicks: this.state.clicks + 1}, () => {
+        clearTimeout(this.shakeTimer);
+        this.setState({totalClicks: this.state.totalClicks + 1, clicks: this.state.clicks + 1, shaking: true}, () => {
             this.socket.emit('clicked', {
                 userClicks: this.state.clicks,
                 user: this.state.user
             });
+            this.shakeTimer = setTimeout(() => {
+                this.setState({shaking: false});
+            }, 1000);
         });
     }
 
     render() {
+
+        let game = null;
+        let shakerClass = 'click-header';
+        let cookieClass = 'clicker';
+
+        if (this.state.shaking) {
+            cookieClass = 'clicker shaker';
+            shakerClass = 'click-header shaker'
+        }
+
+        if (this.state.loading) {
+            game = (
+                <div className='Game'>
+                    <p className='loading'>Loading...</p>
+                </div>
+            )
+        } else {
+            game = (
+                <div className='Game'>
+                    <h1 className='hello'>Hello, {this.state.user}</h1>
+                    <h1 className={shakerClass}>Click the cookie!</h1>
+                    <img src={require('../../assets/images/cookie.PNG')} alt='Cookie' className={cookieClass} onClick={() => this.handleButtonClick()}/>
+                    {/* <button className='clicker' onClick={() => this.handleButtonClick()}>Click!!</button> */}
+                    <p>Amount of clicks needed for next win: {100 - (this.state.totalClicks % 100)}</p>
+                </div>
+            )
+        }
+
         return (
-            <div className='Game'>
-                <h1>Hello {this.state.user}</h1>
-                <p>Amount of clicks needed for next win: {100 - (this.state.totalClicks % 100)}</p>
-                <button onClick={() => this.handleButtonClick()}>Click!!</button>
-            </div>
+            game
         )
     }
 }

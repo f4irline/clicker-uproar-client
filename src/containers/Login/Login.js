@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './Login.css';
 
 class Login extends Component {
 
@@ -17,8 +18,10 @@ class Login extends Component {
     render() {
         return (
             <div className='Login'>
-                <input name='name' onChange={this.inputChangedHandler.bind(this)} placeholder='Name'></input>
-                <button name='submit' onClick={this.handleClick.bind(this)}>Submit</button>
+                <div className='login-wrapper'>
+                    <input name='name' onChange={this.inputChangedHandler.bind(this)} placeholder='Name'></input>
+                    <button name='submit' onClick={this.handleClick.bind(this)}>Submit</button>
+                </div>
             </div>
         )
     }

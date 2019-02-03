@@ -1,0 +1,24 @@
+.Login {
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-wrapper {
+    display: flex;
+    height: 100px;
+    padding: 10px;
+    width: 40vw;
+    box-shadow: 0 2px 3px #333;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-wrapper > input {
+    font-size: 3vh;
+}
+
+.login-wrapper > button {
+    font-size: 3vh;
+}
