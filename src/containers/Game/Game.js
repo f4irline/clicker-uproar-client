@@ -5,6 +5,8 @@ import './Game.css';
 
 class Game extends Component {
 
+    _isMounted = false;
+
     constructor(props) {
         super(props);
         
@@ -34,6 +36,9 @@ class Game extends Component {
      * Create socket listeners.
      */
     componentDidMount() {
+
+        this._isMounted = true;
+
         this.socket.on('clicked', (data) => { // Called when another socket clicks the button
             clearTimeout(this.shakeTimer);
             this.receiveClicks(data);
@@ -69,6 +74,8 @@ class Game extends Component {
      */
     componentWillUnmount() {
         this.socket.close();
+        this.socket.removeAllListeners();
+        clearTimeout(this.shakeTimer);
     }
 
     /**

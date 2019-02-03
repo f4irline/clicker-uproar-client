@@ -3,11 +3,13 @@ import './App.css';
 import Game from './containers/Game/Game';
 import Login from './containers/Login/Login';
 import Leaderboards from './containers/Leaderboards/Leaderboards';
+import { Route } from 'react-router-dom';
+import Navigation from './containers/Navigation/Navigation';
 
 class App extends Component {
 
     state = {
-        logged: false,
+        logged: true,
         user: ''
     }
 
@@ -21,12 +23,24 @@ class App extends Component {
 
         let app = null;
 
-        this.state.logged ? app = <Game userName={this.state.user}/> : app = <Login user={this.handleLogin.bind(this)} />
+        if (this.state.logged) {
+            app = (
+                <div className='App'>
+                    <Navigation />
+                    <Route path='/' exact component={Game} />
+                    <Route path='/leaderboards' exact component={Leaderboards} />
+                </div>
+            )
+        } else {
+            app = ( 
+                <div className='App'>
+                    <Login user={this.handleLogin.bind(this)} />
+                </div>
+            )
+        }
 
         return (
-        <div className="App">
-            <Leaderboards />
-        </div>
+            app
         );
     }
 }

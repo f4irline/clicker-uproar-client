@@ -4,5 +4,7 @@
 }
 
 .Leaderboards {
+    position: relative;
     font-family: Titillium-Light;
+    top: 5vh;
 }
