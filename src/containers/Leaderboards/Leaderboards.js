@@ -7,13 +7,16 @@ import './Leaderboards.css';
 import Table from '../../components/Table/Table';
 
 class Leaderboards extends Component {
+
+    PORT = process.env.PORT || 5000;
     
     constructor(props) {
         super(props);
+        console.log(this.PORT);
         this.state = {
             winners: [],
             // endpoint: 'https://clicker-uproar-server.herokuapp.com/leaderboards',
-            endpoint: 'http://localhost:5000/leaderboards',
+            endpoint: `http://localhost:${this.PORT}/leaderboards`,
             loading: true
         }
     }

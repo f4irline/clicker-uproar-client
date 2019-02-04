@@ -18,6 +18,8 @@ class Game extends Component {
     // happens to be unmounted already.
     _isMounted = false;
 
+    PORT = process.env.PORT || 5000;
+
     constructor(props) {
         super(props);
         
@@ -26,7 +28,7 @@ class Game extends Component {
             totalClicks: 0,
             clicks: 0,
             // endpoint: 'https://clicker-uproar-server.herokuapp.com/',
-            endpoint: 'localhost:5000', // Local endpoint for the socket.io
+            endpoint: `http://localhost:${this.PORT}`, // Local endpoint for the socket.io
             user: props.userName,
             shaking: false,
             win: false,
