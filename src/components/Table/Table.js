@@ -11,6 +11,8 @@ const Table = (props) => {
         win: 'Size'
     }
 
+    // First push the header row to the rows. It has different styling:
+    // set those styles inline.
     rows.push(<Row 
         styleProp={{backgroundColor: 'rgb(243, 117, 0)', 
                     textTransform: 'uppercase', 
@@ -21,6 +23,8 @@ const Table = (props) => {
                 }} 
         key={1} rowEntry={header} />)
 
+    // Make rows out of the winner entries that were 
+    // given in the props, and push them to the rows array.
     for (let i = winners.length - 1; i >= 0; i--) {
         rows.push(<Row key={winners[i].user_id} rowEntry={winners[i]} />)
     }

@@ -4,6 +4,10 @@ import NavItem from './NavItem/NavItem';
 
 import './Navigation.css';
 
+/**
+ * Simple navigation. Create NavItem objects
+ * for root (game) and the leaderboards.
+ */
 class Navigation extends Component {
     render() {
         return (

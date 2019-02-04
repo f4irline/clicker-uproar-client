@@ -3,6 +3,12 @@ import { NavLink } from 'react-router-dom';
 
 import './NavItem.css';
 
+/**
+ * Uses NavLinks from react-router-dom to
+ * create navigation items with easy activation.
+ * 
+ * @param {Object} props 
+ */
 const NavItem = (props) => {
     return (
         <div className='linkWrapper'>

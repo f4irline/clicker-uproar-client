@@ -18,6 +18,9 @@ class Leaderboards extends Component {
         }
     }
 
+    /**
+     * Fetch all the winners from the database when component has mounted
+     */
     componentDidMount() {
         this.fetchWinners()
             .catch((error) => {
@@ -25,12 +28,15 @@ class Leaderboards extends Component {
             });
     }
 
+    /**
+     * Fetching function
+     */
     fetchWinners = async () => {
         try {
             const res = await fetch (this.state.endpoint);
             const data = await res.json();
-            this.setState({winners: data}, () => {
-                this.setState({loading: false});
+            this.setState({winners: data}, () => { // Set the array of objects from the database to the state
+                this.setState({loading: false}); // Set loading to false so Loading spinner is not displayed anymore
             })
         } catch (error) {
             console.log('Error');
@@ -40,8 +46,10 @@ class Leaderboards extends Component {
 
     render() {
 
+        // Initially the rendered component is null
         let leaderboards = null;
 
+        // If it's loading, display a loading spinner
         if (this.state.loading) {
             leaderboards = (
                 <div className='Leaderboards-loading'>

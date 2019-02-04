@@ -16,14 +16,22 @@ class App extends Component {
         user: '',
     }
 
+    /**
+     * Called from 'Login' component when user has provided a 
+     * username succesfully.
+     * 
+     * @param {String} userName 
+     */
     handleLogin(userName) {
         this.setState({logged: true, user: userName});
     }
 
     render() {
 
+        // Initially the app is null
         let app = null;
 
+        // If user has logged in, display the Game component and Leaderboards component and stuff.
         if (this.state.logged) {
             app = (
                 <div className='App'>
@@ -32,7 +40,7 @@ class App extends Component {
                     <Route path='/leaderboards' exact component={Leaderboards} />
                 </div>
             )
-        } else {
+        } else { // If the user has not logged in, display the Login component.
             app = ( 
                 <div className='App'>
                     <Login user={this.handleLogin.bind(this)} />

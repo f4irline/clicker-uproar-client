@@ -8,8 +8,13 @@ class Login extends Component {
         shake: false
     }
 
+    // Class for the validation paragraph on top of the input field.
     validation = 'validation';
 
+    /**
+     * Validates that the user has entered atleast some username.
+     * Then set the username to state of the root App-component.
+     */
     handleClick() {
         if (this.state.input.length > 0) {
             this.props.user(this.state.input);
@@ -18,6 +23,13 @@ class Login extends Component {
         }
     }
     
+    /**
+     * Updates the input state when the input field is changed.
+     * Handles changing the class of the validation paragraph on top
+     * of the input field.
+     * 
+     * @param {Object} event 
+     */
     inputChangedHandler(event) {
         this.setState({input: event.target.value});
         if (event.target.value.length > 0) {
@@ -31,10 +43,10 @@ class Login extends Component {
 
         let validationClass = this.validation;
         if (this.state.shake) {
-            validationClass = 'validation shaker';
+            validationClass = 'validation shaker'; // Make the validation text shake if user has not entered anything.
             setTimeout(() => {
                 this.setState({shake: false});
-            }, 500);
+            }, 500); // Clear the shaking after 0.5s
         }
 
         return (
