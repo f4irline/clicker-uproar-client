@@ -4,36 +4,34 @@
 }
 
 .Game {
-    position: relative;
-    top: 5vh;
+    position: absolute;
+    width: 100vw;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     font-family: Zcool;
     overflow: hidden;
-    height: 100%;
     margin: 0;
     padding: 0;
 }
 
-.Game > p {
-    padding: 10px;
+.hello {
+    text-transform: uppercase;
+    font-size: 7vh;
+}
+
+.click-header {
     font-size: 4vh;
 }
 
 .clicker {
-    height: 35vh;
+    max-width: 620px;
+    width: 100vw;
 }
 
-.hello {
-    margin-top: 2vh;
-    text-transform: uppercase;
-    font-size: 8vh;
-}
-
-.click-header {
-    font-size: 5vh;
-}
-
-.Game > .loading {
-    text-transform: uppercase;
+.amount {
+    padding: 10px;
+    font-size: 4vh;
 }
 
 .shaker {
@@ -42,20 +40,15 @@
 }
 
 .win {
-    pointer-events: none;
-    opacity: 1;
-    color: rgb(243, 117, 0);
-    font-size: 5em !important;
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -100%);
+    max-width: 450px;
+    width: 75vw;
+    opacity: 1;
+    transform: translate(-50%, -50%);
     transition: 0.5s ease;
-    text-shadow:
-    -1px -1px 0 #000,  
-     1px -1px 0 #000,
-     -1px 1px 0 #000,
-      1px 1px 0 #000; 
+    pointer-events: none;
 }
 
 .hidden {

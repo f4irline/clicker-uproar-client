@@ -3,8 +3,30 @@
     src: url('../../assets/fonts/Titillium_Web/TitilliumWeb-Light.ttf');
 }
 
-.Leaderboards {
-    position: relative;
+.Leaderboards-loading {
+    position: absolute;
+    width: 100%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     font-family: Titillium-Light;
+    margin: 0;
+    padding: 0;
+}
+
+.Leaderboards {
+    position: absolute;
+    width: 100%;
+    left: 50%;
     top: 5vh;
+    transform: translate(-50%, 0);
+    font-family: Titillium-Light;
+    margin: 0;
+    padding: 0;
+}
+
+@media (min-width: 1200px) {
+    .Leaderboards {
+        width: 90%;
+    }
 }

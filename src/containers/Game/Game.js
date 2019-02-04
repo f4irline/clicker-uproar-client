@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
 import socketIOClient from 'socket.io-client';
 
+import Loader from 'react-loader-spinner'
+
 import './Game.css';
+
+const onImg = require('../../assets/images/on.png');
+const offImg = require('../../assets/images/off.png');
+const gold = require('../../assets/images/gold.png');
+const ruby = require('../../assets/images/ruby.png');
+const diamond = require('../../assets/images/diamond.png');
 
 class Game extends Component {
 
@@ -28,7 +36,13 @@ class Game extends Component {
             this.setState({shaking: false});
         }, 2000);
 
-        this.monch = new Audio(require('../../assets/sfx/monch.mp3'));
+        this.sound_1 = new Audio(require('../../assets/sfx/sound_1.mp3'));
+        this.sound_2 = new Audio(require('../../assets/sfx/sound_2.mp3'));
+        this.sound_3 = new Audio(require('../../assets/sfx/sound_3.mp3'));
+        this.sound_4 = new Audio(require('../../assets/sfx/sound_4.mp3'));
+
+        this.nextAudio = null;
+
         this.win = new Audio(require('../../assets/sfx/win.mp3'));
     }
 
@@ -37,6 +51,8 @@ class Game extends Component {
      */
     componentDidMount() {
         this._isMounted = true;
+
+        this.randomizeAudio();
 
         this.socket.emit('initsocket');
 
@@ -65,13 +81,10 @@ class Game extends Component {
         this.socket.on('initclicks', (data) => { // Called when this socket connects, sets the amount of clicks to the state
             if (this._isMounted) {
                 this.setState({totalClicks: data, loading: false});
-                console.log('Getting clicks');
             }
         });
 
         this.socket.on('requestClicks', (data) => { // Called to the last in the socket list when a new socket connects. 
-            console.log('New connection found');
-            console.log(data);
             this.sendClicks(data);
         });
     }
@@ -91,7 +104,6 @@ class Game extends Component {
      * Sets the clicks amount when another socket clicks the button
      */
     receiveClicks = (data) => {
-        console.log('Receiving');
         this.setState({totalClicks: data})
     }
 
@@ -110,14 +122,13 @@ class Game extends Component {
      * emits the event to other sockets.
      */
     handleButtonClick = () => {
-        console.log('Clicked');
         clearTimeout(this.shakeTimer);
-        if (this.monch.paused) {
-            this.monch.play();
+        if (this.nextAudio.paused) {
+            this.nextAudio.play();
         } else {
-            this.monch.pause();
-            this.monch.currentTime = 0;
-            this.monch.play();
+            this.nextAudio.pause();
+            this.nextAudio.currentTime = 0;
+            this.nextAudio.play();
         }
         if (this._isMounted) {
             this.setState({totalClicks: this.state.totalClicks + 1, clicks: this.state.clicks + 1, shaking: true}, () => {
@@ -127,41 +138,92 @@ class Game extends Component {
                 });
                 this.shakeTimer = setTimeout(() => {
                     this.setState({shaking: false});
-                }, 1000);
+                }, 200);
             });
+        }
+
+        this.randomizeAudio();
+    }
+
+    randomizeAudio() {
+        switch (Math.floor(Math.random() * 4)) {
+            case 0:
+                this.nextAudio = this.sound_1;
+                break;
+            case 1:
+                this.nextAudio = this.sound_2;
+                break;
+            case 2:
+                this.nextAudio = this.sound_3;
+                break;
+            case 3:
+                this.nextAudio = this.sound_4;
+                break;
+            default:
+                this.nextAudio = this.sound_1;
         }
     }
 
     render() {
 
         let game = null;
-        let winClass = 'win hidden';
-        let shakerClass = 'click-header';
-        let cookieClass = 'clicker';
+
+        /**
+         * Different styles for all the prizes.
+         */
+        let rubyClass = 'win hidden';
+        let diamondClass = 'win hidden';
+        let goldClass = 'win hidden';
+
+        //
+        let clickHeaderClass = 'click-header';
+        let clickerClass = 'clicker';
+
+        let gameImg = offImg;
 
         if (this.state.shaking) {
-            cookieClass = 'clicker shaker';
-            shakerClass = 'click-header shaker'
+            clickerClass = 'clicker shaker';
+            clickHeaderClass = 'click-header shaker'
+            gameImg = onImg;
         }
 
         if (this.state.win) {
-            winClass = 'win';
+            if (this.state.winText === 'ruby') {
+                rubyClass = 'win';
+            } else if (this.state.winText === 'diamond') {
+                diamondClass = 'win';
+            } else if (this.state.winText === 'gold') {
+                goldClass = 'win';
+            }
         }
+
+        let winImg = (
+            <div>
+                <img src={gold} alt='gold' className={goldClass}/>
+                <img src={diamond} alt='diamond' className={diamondClass}/>
+                <img src={ruby} alt='ruby' className={rubyClass}/>
+            </div>
+        )
 
         if (this.state.loading) {
             game = (
                 <div className='Game'>
-                    <p className='loading'>Loading...</p>
+                    <Loader 
+                        type='Oval'
+                        color='rgb(243, 117, 0)'
+                        height="300"
+                        width="300"
+                    />                       
                 </div>
             )
         } else {
             game = (
                 <div className='Game'>
                     <h1 className='hello'>Hello, {this.state.user}</h1>
-                    <h1 className={shakerClass}>Click the cookie!</h1>
-                    <img src={require('../../assets/images/cookie.PNG')} alt='Cookie' className={cookieClass} onClick={() => this.handleButtonClick()}/>
+                    <h1 className={clickHeaderClass}>Smash the rock!</h1>
+                    <img src={gameImg} alt='Cookie' className={clickerClass} onClick={() => this.handleButtonClick()}/>
                     <p className='amount'>Amount of clicks needed for next win: {100 - (this.state.totalClicks % 100)}</p>
-                    <p className={winClass}>You win {this.state.winText}!</p>
+                    {winImg}
                 </div>
             )
         }

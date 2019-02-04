@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-// import socketIOClient from 'socket.io-client';
+
+import Loader from 'react-loader-spinner'
 
 import './Leaderboards.css';
 
-import Table from './Table/Table';
+import Table from '../../components/Table/Table';
 
 class Leaderboards extends Component {
     
@@ -42,15 +43,26 @@ class Leaderboards extends Component {
         let leaderboards = null;
 
         if (this.state.loading) {
-            leaderboards = <p>Loading...</p>
+            leaderboards = (
+                <div className='Leaderboards-loading'>
+                    <Loader 
+                        type='Oval'
+                        color='rgb(243, 117, 0)'
+                        height="300"
+                        width="300"
+                    />                 
+                </div>
+            )
         } else {
-            leaderboards = <Table entries={this.state.winners}/>
+            leaderboards = (
+                <div className='Leaderboards'>
+                    <Table className='table' entries={this.state.winners}/>
+                </div>
+            )
         }
 
         return (
-            <div className='Leaderboards'>
-                {leaderboards}
-            </div>
+            leaderboards
         )
     }
 }

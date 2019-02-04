@@ -4,19 +4,20 @@ import Game from './containers/Game/Game';
 import Login from './containers/Login/Login';
 import Leaderboards from './containers/Leaderboards/Leaderboards';
 import { Route } from 'react-router-dom';
-import Navigation from './containers/Navigation/Navigation';
+import Navigation from './components/Navigation/Navigation';
 
 class App extends Component {
 
+    /**
+     * State which checks if the user has logged in or not.
+     */
     state = {
         logged: false,
         user: '',
     }
 
     handleLogin(userName) {
-        this.setState({logged: true, user: userName}, () => {
-            console.log(this.state.user);
-        });
+        this.setState({logged: true, user: userName});
     }
 
     render() {
