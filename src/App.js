@@ -10,7 +10,7 @@ class App extends Component {
 
     state = {
         logged: false,
-        user: ''
+        user: '',
     }
 
     handleLogin(userName) {

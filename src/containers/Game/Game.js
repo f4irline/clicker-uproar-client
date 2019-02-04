@@ -36,9 +36,6 @@ class Game extends Component {
      * Create socket listeners.
      */
     componentDidMount() {
-
-        this._isMounted = true;
-
         this.socket.on('clicked', (data) => { // Called when another socket clicks the button
             clearTimeout(this.shakeTimer);
             this.receiveClicks(data);
