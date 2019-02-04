@@ -1,4 +1,4 @@
-# Clicker Uproar
+# Clicker Uproar - CLIENT SIDE
 
 ## The premium clicker game!
 
