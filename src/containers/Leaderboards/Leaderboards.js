@@ -12,8 +12,8 @@ class Leaderboards extends Component {
         super(props);
         this.state = {
             winners: [],
-            endpoint: 'https://clicker-uproar-server.herokuapp.com/leaderboards',
-            // endpoint: 'http://localhost:5000/leaderboards',
+            // endpoint: 'https://clicker-uproar-server.herokuapp.com/leaderboards',
+            endpoint: 'http://localhost:5000/leaderboards',
             loading: true
         }
     }
