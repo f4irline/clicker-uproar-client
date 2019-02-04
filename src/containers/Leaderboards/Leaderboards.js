@@ -6,13 +6,15 @@ import './Leaderboards.css';
 import Table from './Table/Table';
 
 class Leaderboards extends Component {
+
+    _isMounted = false;
     
     constructor(props) {
         super(props);
         this.state = {
             winners: [],
-            endpoint: 'https://clicker-uproar-server.herokuapp.com/',
-            // endpoint: 'localhost:5000',
+            // endpoint: 'https://clicker-uproar-server.herokuapp.com/',
+            endpoint: 'localhost:5000',
             loading: true
         }
 
@@ -22,11 +24,21 @@ class Leaderboards extends Component {
     componentDidMount() {
         this.receiveLeaderboards();
 
+        this._isMounted = true;
+
         this.socket.on('leaderboards', (data) => {
-            this.setState({winners: data}, () => {
-                this.setState({loading: false})
-            });
+            if (this._isMounted) {
+                this.setState({winners: data}, () => {
+                    this.setState({loading: false})
+                });
+            }
         })
+    }
+
+    componentWillUnmount() {
+        this.socket.close();
+        this.socket.removeAllListeners();
+        this._isMounted = false;
     }
 
     receiveLeaderboards() {

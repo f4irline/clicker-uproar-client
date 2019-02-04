@@ -14,8 +14,8 @@ class Game extends Component {
             loading: true,
             totalClicks: 0,
             clicks: 0,
-            endpoint: 'https://clicker-uproar-server.herokuapp.com/',
-            // endpoint: 'localhost:5000',
+            // endpoint: 'https://clicker-uproar-server.herokuapp.com/',
+            endpoint: 'localhost:5000',
             user: props.userName,
             shaking: false,
             win: false,
@@ -36,27 +36,37 @@ class Game extends Component {
      * Create socket listeners.
      */
     componentDidMount() {
+        this._isMounted = true;
+
+        this.socket.emit('initsocket');
+
         this.socket.on('clicked', (data) => { // Called when another socket clicks the button
             clearTimeout(this.shakeTimer);
             this.receiveClicks(data);
-            this.setState({shaking: true}, () => {
-                this.shakeTimer = setTimeout(() => {
-                    this.setState({shaking: false});
-                }, 1000);
-            });
+            if (this._isMounted) {
+                this.setState({shaking: true}, () => {
+                    this.shakeTimer = setTimeout(() => {
+                        this.setState({shaking: false});
+                    }, 1000);
+                });
+            }
         });
 
         this.socket.on('win', (data) => { // Called when this socket wins
-            this.setState({winText: data, win: true});
-            this.win.play();
-            setTimeout(() => {
-                this.setState({win: false});
-            }, 2000);    
+            if (this._isMounted) {
+                this.setState({winText: data, win: true});
+                this.win.play();
+                setTimeout(() => {
+                    this.setState({win: false});
+                }, 2000);    
+            }
         });
 
         this.socket.on('initclicks', (data) => { // Called when this socket connects, sets the amount of clicks to the state
-            this.setState({totalClicks: data, loading: false});
-            console.log('Getting clicks');
+            if (this._isMounted) {
+                this.setState({totalClicks: data, loading: false});
+                console.log('Getting clicks');
+            }
         });
 
         this.socket.on('requestClicks', (data) => { // Called to the last in the socket list when a new socket connects. 
@@ -70,8 +80,10 @@ class Game extends Component {
      * Close the socket connection when user leaves the component.
      */
     componentWillUnmount() {
+        this.socket.emit('endconnection');
         this.socket.close();
         this.socket.removeAllListeners();
+        this._isMounted = false;
         clearTimeout(this.shakeTimer);
     }
 
@@ -107,15 +119,17 @@ class Game extends Component {
             this.monch.currentTime = 0;
             this.monch.play();
         }
-        this.setState({totalClicks: this.state.totalClicks + 1, clicks: this.state.clicks + 1, shaking: true}, () => {
-            this.socket.emit('clicked', {
-                userClicks: this.state.clicks,
-                user: this.state.user
+        if (this._isMounted) {
+            this.setState({totalClicks: this.state.totalClicks + 1, clicks: this.state.clicks + 1, shaking: true}, () => {
+                this.socket.emit('clicked', {
+                    userClicks: this.state.clicks,
+                    user: this.state.user
+                });
+                this.shakeTimer = setTimeout(() => {
+                    this.setState({shaking: false});
+                }, 1000);
             });
-            this.shakeTimer = setTimeout(() => {
-                this.setState({shaking: false});
-            }, 1000);
-        });
+        }
     }
 
     render() {
