@@ -1,48 +1,40 @@
 import React, {Component} from 'react';
-import socketIOClient from 'socket.io-client';
+// import socketIOClient from 'socket.io-client';
 
 import './Leaderboards.css';
 
 import Table from './Table/Table';
 
 class Leaderboards extends Component {
-
-    _isMounted = false;
     
     constructor(props) {
         super(props);
         this.state = {
             winners: [],
-            // endpoint: 'https://clicker-uproar-server.herokuapp.com/',
-            endpoint: 'localhost:5000',
+            endpoint: 'https://clicker-uproar-server.herokuapp.com/',
+            // endpoint: 'http://localhost:5000/leaderboards',
             loading: true
         }
-
-        this.socket = socketIOClient(this.state.endpoint);
     }
 
     componentDidMount() {
-        this.receiveLeaderboards();
-
-        this._isMounted = true;
-
-        this.socket.on('leaderboards', (data) => {
-            if (this._isMounted) {
-                this.setState({winners: data}, () => {
-                    this.setState({loading: false})
-                });
-            }
-        })
+        this.fetchWinners()
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
-    componentWillUnmount() {
-        this.socket.close();
-        this.socket.removeAllListeners();
-        this._isMounted = false;
-    }
-
-    receiveLeaderboards() {
-        this.socket.emit('requestLeaderboards');
+    fetchWinners = async () => {
+        try {
+            const res = await fetch (this.state.endpoint);
+            const data = await res.json();
+            this.setState({winners: data}, () => {
+                this.setState({loading: false});
+            })
+        } catch (error) {
+            console.log('Error');
+            throw error;
+        }
     }
 
     render() {
