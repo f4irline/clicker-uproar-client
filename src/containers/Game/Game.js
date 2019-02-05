@@ -27,8 +27,8 @@ class Game extends Component {
             loading: true,
             totalClicks: 0,
             clicks: 0,
-            // endpoint: 'https://clicker-uproar-server.herokuapp.com/',
-            endpoint: `http://localhost:${this.PORT}`, // Local endpoint for the socket.io
+            endpoint: 'https://clicker-uproar-server.herokuapp.com/',
+            // endpoint: `http://localhost:${this.PORT}`, // Local endpoint for the socket.io
             user: props.userName,
             shaking: false,
             win: false,

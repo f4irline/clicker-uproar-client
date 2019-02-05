@@ -15,8 +15,8 @@ class Leaderboards extends Component {
         console.log(this.PORT);
         this.state = {
             winners: [],
-            // endpoint: 'https://clicker-uproar-server.herokuapp.com/leaderboards',
-            endpoint: `http://localhost:${this.PORT}/leaderboards`,
+            endpoint: 'https://clicker-uproar-server.herokuapp.com/leaderboards',
+            // endpoint: `http://localhost:${this.PORT}/leaderboards`,
             loading: true
         }
     }
